@@ -26,7 +26,7 @@ class Splash(BaseState):
         self.time_active += dt
         if self.time_active >= 2200:
             self.index = 0
-        if self.time_active >= 3000:
+        if self.time_active >= 2200:
             self.done = True
 
     def draw(self, surface):
