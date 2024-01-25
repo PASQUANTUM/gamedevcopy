@@ -38,7 +38,7 @@ class Menu(BaseState):
                 self.handle_action()
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        surface.fill(pygame.Color("grey"))
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)
             surface.blit
