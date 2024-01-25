@@ -24,11 +24,11 @@ class Splash(BaseState):
             self.counter = 0
             self.index += 1
         self.time_active += dt
-        if self.time_active >= 2200:
+        if self.time_active >= 1:#2200
             self.index = 0
-        if self.time_active >= 2200:
+        if self.time_active >= 1:
             self.done = True
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        surface.fill(pygame.Color("grey"))
         surface.blit(self.startlogoanimations[self.index],(400,1080/2-350))
