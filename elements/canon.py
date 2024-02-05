@@ -55,7 +55,7 @@ class CANON(pygame.sprite.Sprite):
 
     def animationcount(self):
         if self.shooting == True:
-            print (self.count)
+
             self.count -= self.vel_y * 2
             self.vel_y -= .5
             if self.vel_y < -1:

@@ -10,14 +10,15 @@ class BALL(pygame.sprite.Sprite):
 
     def __init__(self, pos, img):
         super().__init__()
+
         if img == 1:
-            self.width = 32
-            self.height = 32
+            self.width = 48
+            self.height = 48
         else:
             self.width = 64
             self.height = 64
 
-        self.image = pygame.image.load(f'assets/ball{img}.png')
+        self.image = pygame.image.load(f'assets//ball/ball{img}.png')
         self.rect = self.image.get_rect(center = pos)
         self.gravity = .5
         self.xspeed = random.randint(-10,-1)
@@ -30,17 +31,18 @@ class BALL(pygame.sprite.Sprite):
 
         if self.rect.top < 0:
             self.impact()
-        if self.rect.left < 640:
-            self.impact()
-        if self.rect.right > 640*2:
-            self.impact()
         if self.rect.bottom < 1081:
             self.yspeed += self.gravity
         else:
-             if self.yspeed > BOUNCE_STOP:
-                 self.yspeed = self.yspeed * -1 * self.retention
-             if abs(self.yspeed) <= BOUNCE_STOP:
+            print(self.yspeed)
+            print(self.xspeed)
+            if self.yspeed > BOUNCE_STOP:
+                self.yspeed = self.yspeed * -1 * self.retention
+                self.xspeed = self.xspeed * -1 * self.retention
+            if abs(self.yspeed) <= BOUNCE_STOP:
                 self.yspeed = 0
+                self.xspeed = 0
+
 
     def is_distance_colliding(self, other):
         distance = (((self.rect.centerx-other.rect.centerx) ** 2) + ((self.rect.centery-other.rect.centery) ** 2)) ** 0.5
@@ -61,14 +63,20 @@ class BALL(pygame.sprite.Sprite):
         else:
             return False
 
-    def impact(self,other_y_vel = 0):
+    def impact(self,other_y_vel = 0, other_angle = 0):
         if other_y_vel == 0:
             other_y_vel = 0
         else:
             other_y_vel = other_y_vel
-            print('vel',other_y_vel)
-            self.yspeed = other_y_vel
+
+        if other_angle == 0:
+            other_angle = 0
+        else:
+            other_angle = other_angle
+
+        print('other velocity',other_y_vel)
         self.xspeed = self.xspeed * -1 * self.retention
+        self.yspeed = self.yspeed * -1 * self.retention - other_y_vel
 
     #Test
 

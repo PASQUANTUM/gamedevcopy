@@ -5,7 +5,7 @@ class POINT10CIRCLE(pygame.sprite.Sprite):
         super().__init__()
         self.width = 64
         self.height = 64
-        self.image = pygame.image.load(f'assets/point10circle.png')
+        self.image = pygame.image.load(f'assets/pointcircles/point10circle.png')
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
         self.rect = self.image.get_rect(center=pos)
         self.x = self.rect.x

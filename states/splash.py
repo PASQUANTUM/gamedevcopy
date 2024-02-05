@@ -6,7 +6,7 @@ from spritesheet import Spritesheet
 class Splash(BaseState):
     def __init__(self):
         super(Splash, self).__init__()
-        self.myspritesheet0 = Spritesheet("assets/New Piskel-1.png")
+        self.myspritesheet0 = Spritesheet("assets/logo/splashlogo.png")
         self.startlogoanimations = []
         for num in range (0,31):
             img = self.myspritesheet0.parse_sprite(f"New Piskel{num}.png")
@@ -24,11 +24,11 @@ class Splash(BaseState):
             self.counter = 0
             self.index += 1
         self.time_active += dt
-        if self.time_active >= 1:#2200
+        if self.time_active >= 2200:#2200
             self.index = 0
-        if self.time_active >= 1:
+        if self.time_active >= 2200:
             self.done = True
 
     def draw(self, surface):
-        surface.fill(pygame.Color("grey"))
+        surface.fill(pygame.Color("black"))
         surface.blit(self.startlogoanimations[self.index],(400,1080/2-350))

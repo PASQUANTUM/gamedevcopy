@@ -7,10 +7,13 @@ class Menu(BaseState):
         super(Menu, self).__init__()
         self.active_index = 0
         self.options = ["Start Game", "Quit Game"]
-        myspritesheet = Spritesheet("assets/New Piskel-1.png")
+        myspritesheet = Spritesheet("assets/logo/splashlogo.png")
         self.title = myspritesheet.parse_sprite("New Piskel0.png")
         self.title = pygame.transform.scale(self.title,(1920,1080))
         self.next_state = "GAMEPLAY"
+        self.load_data()
+        self.hstext = f"YOUR HIGHSCORE IS: {self.highscore}"
+        self.hssurf = self.font.render(self.hstext, True, "red")
 
     def render_text(self, index):
         color = pygame.Color("red") if index == self.active_index else pygame.Color("white")
@@ -38,9 +41,15 @@ class Menu(BaseState):
                 self.handle_action()
 
     def draw(self, surface):
-        surface.fill(pygame.Color("grey"))
+        surface.fill(pygame.Color("black"))
+        surface.blit(self.hssurf, (1920 / 2 - 179, 1080 / 2 - 100))
         for index, option in enumerate(self.options):
             text_render = self.render_text(index)
             surface.blit
             surface.blit(text_render, self.get_text_position(text_render, index))
             surface.blit(self.title,(400,1080/2-350))
+
+    def update(self,dt):
+        self.load_data()
+        self.hstext = f"YOUR HIGHSCORE IS: {self.highscore}"
+        self.hssurf = self.font.render(self.hstext, True, "red")

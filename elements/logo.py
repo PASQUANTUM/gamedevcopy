@@ -5,7 +5,7 @@ class LOGO(pygame.sprite.Sprite):
 
     def __init__(self, pos):
         super().__init__()
-        self.spritesheet = Spritesheet('assets/happyflipperlogo.png')
+        self.spritesheet = Spritesheet('assets/logo/happyflipperlogo.png')
         self.basicanimation = []
         self.index = 0
         self.counter = 0
