@@ -56,6 +56,12 @@ class BALL(pygame.sprite.Sprite):
         x_collision = (math.fabs(self.rect.centerx - other.rect.centerx) * 2) < (self.width + other.width)
         y_collision = (math.fabs(self.rect.centery - other.rect.centery) * 2) < (self.height + other.height)
         return (x_collision and y_collision)
+    
+    def checkxorycol(self, other):
+    #
+        x_collision = (math.fabs(self.rect.centerx - other.rect.centerx) * 2) < (self.width + other.width)
+        y_collision = (math.fabs(self.rect.centery - other.rect.centery) * 2) < (self.height + other.height)
+        return x_collision ,y_collision
 
     def is_overlapping_collision(self, other):
         if self.rect.x == other.rect.x and self.rect.y == other.rect.y:
@@ -74,9 +80,13 @@ class BALL(pygame.sprite.Sprite):
         else:
             other_angle = other_angle
 
-        print('other velocity',other_y_vel)
+
+
+        #print('other velocity',other_y_vel)
         self.xspeed = self.xspeed * -1 * self.retention
         self.yspeed = self.yspeed * -1 * self.retention - other_y_vel
+        self.rect.centerx += self.xspeed*0.3
+        self.rect.centery += self.yspeed*0.3
 
     #Test
 

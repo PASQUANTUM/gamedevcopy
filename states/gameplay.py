@@ -26,6 +26,8 @@ class Gameplay(BaseState):
         self.bumper2 = BUMPER((400+1920/3, 950),2)
         self.wall1 = WALL((640, 0),1)
         self.wall2 = WALL((1280 , 0),1)
+        self.wall3 = WALL((640, 0),2)
+        self.wall4 = WALL((1280 , 0),3)
         self.logo = LOGO((640,100))
         self.highscore = self.load_data()
         self.points = 0
@@ -53,6 +55,11 @@ class Gameplay(BaseState):
                 ball1.impact()
             if ball1.is_aabb_colliding(self.wall2) == True:
                 ball1.impact()
+            if ball1.is_aabb_colliding(self.wall3) == True:
+                ball1.impact()
+            if ball1.is_aabb_colliding(self.wall4) == True:
+                ball1.impact()
+                
     def highscorefunc(self):
         if self.points > self.highscore:
             self.highscore = self.points
@@ -80,6 +87,8 @@ class Gameplay(BaseState):
         surface.blit(self.bumper2.image, (self.bumper2.rect))
         surface.blit(self.wall1.image, (self.wall1.rect))
         surface.blit(self.wall2.image, (self.wall2.rect))
+        surface.blit(self.wall3.image, (self.wall3.rect))
+        surface.blit(self.wall4.image, (self.wall4.rect))
         surface.blit(self.logo.image, (self.logo.rect))
         self.ballgroup1.draw(surface)
         self.point10circlegroup.draw(surface)
