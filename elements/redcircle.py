@@ -10,6 +10,8 @@ class REDCIRCLE(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.x = self.rect.x
         self.y = self.rect.y
+        self.col_y = 5
+        self.col_x = 5
         self.xspeed = 3
 
     def move(self):
