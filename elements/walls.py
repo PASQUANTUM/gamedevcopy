@@ -10,6 +10,8 @@ class WALL(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
         self.rect = self.image.get_rect(topright=pos)
         self.angle = 0
+        self.col_y = 0
+        self.col_x = 0
         if orientation == 2:
             self.image = pygame.transform.rotate(self.image, 30)
             self.rect = self.image.get_rect(center=(640,0))

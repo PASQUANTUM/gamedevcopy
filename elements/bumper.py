@@ -1,7 +1,10 @@
+import random
+
 import pygame
+import math
 
 class BUMPER(pygame.sprite.Sprite):
-    def __init__(self, pos, orientation):
+    def __init__(self, pos,orientation):
         super().__init__()
         self.width = 180
         self.height = 50
@@ -12,7 +15,18 @@ class BUMPER(pygame.sprite.Sprite):
         self.y = self.rect.y
         self.vel_y = 10
         self.col_y = 0
+        self.col_x = 0
         self.flip = False
+
+        self.orientation = orientation
+        if self.orientation == 1:
+            self.angle = 355
+            self.image = pygame.transform.rotate(self.image, self.angle)
+
+        if self.orientation == 2:
+            self.angle = 5
+            self.image = pygame.transform.rotate(self.image, self.angle)
+
 
     def flip_bumper(self):
         if self.flip:
@@ -23,7 +37,39 @@ class BUMPER(pygame.sprite.Sprite):
                 self.flip = False
 
 
+    def rectRotated(self):
+        """
+        Function to rotate a Rectangle
+        rotates Rect.
+        rect: pygame.Rect
+        rotation: int (degrees)
+        return: (vertices)
+        """
+
+        newp1x = self.rect.topleft[0]*math.cos(math.radians(self.angle))-self.rect.topleft[1]*math.sin(math.radians(self.angle))
+        newp1y = self.rect.topleft[0]*math.sin(math.radians(self.angle))+self.rect.topleft[1]*math.cos(math.radians(self.angle))
+        newp2x = self.rect.topright[0]*math.cos(math.radians(self.angle))-self.rect.topright[1]*math.sin(math.radians(self.angle))
+        newp2y = self.rect.topright[0]*math.sin(math.radians(self.angle))+self.rect.topright[1]*math.cos(math.radians(self.angle))
+        newp3x = self.rect.bottomright[0]*math.cos(math.radians(self.angle))-self.rect.bottomright[1]*math.sin(math.radians(self.angle))
+        newp3y = self.rect.bottomright[0]*math.sin(math.radians(self.angle))+self.rect.bottomright[1]*math.cos(math.radians(self.angle))
+        newp4x = self.rect.bottomleft[0]*math.cos(math.radians(self.angle))-self.rect.bottomleft[1]*math.sin(math.radians(self.angle))
+        newp4y = self.rect.bottomleft[0]*math.sin(math.radians(self.angle))+self.rect.bottomleft[1]*math.cos(math.radians(self.angle))
+
+        newp1 = newp1x, newp1y
+        newp2 = newp2x, newp2y
+        newp3 = newp3x, newp3y
+        newp4 = newp4x, newp4y
+
+        return newp1,newp2,newp3,newp4
+
     def update(self):
         self.flip_bumper()
-        if self.flip: self.col_y = 20
+        if self.flip:
+            self.col_y = random.randint(17,20)
+            if self.orientation == 2:
+                self.col_x = random.randint(3,5)
+
+            else:
+                self.col_x = -1*random.randint(3, 5)
+
         else: self.col_y = 0

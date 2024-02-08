@@ -10,6 +10,7 @@ from elements.bumper import BUMPER
 from elements.walls import WALL
 from elements.logo import LOGO
 from elements.point10circle import POINT10CIRCLE
+from elements.rectangle import RECTANGLE
 import random
 from os import path
 
@@ -17,17 +18,18 @@ class Gameplay(BaseState):
     def __init__(self):
         super(Gameplay, self).__init__()
         self.next_state = "GAME_OVER"
+        self.backgroundpicture = pygame.image.load('assets/backgroundpicture.png').convert_alpha()
         self.ballgroup1 = pygame.sprite.Group()
         self.canon = CANON((475+1920/3,0))
         self.redcircle = REDCIRCLE((1000,200))
         self.point10circlegroup = pygame.sprite.Group()
         self.point10circlegroup.add(POINT10CIRCLE((random.randint(675,1150), random.randint(400,800))))
-        self.bumper1 = BUMPER((100+1920/3,950),1)
+        self.bumper1 = BUMPER((110+1920/3,950),1)
         self.bumper2 = BUMPER((400+1920/3, 950),2)
         self.wall1 = WALL((640, 0),1)
         self.wall2 = WALL((1280 , 0),1)
-        self.wall3 = WALL((640, 0),2)
-        self.wall4 = WALL((1280 , 0),3)
+        self.rectangle3 = RECTANGLE((random.randint(700,800),random.randint(200,400)),random.randint(50,100))
+        self.rectangle4 = RECTANGLE((random.randint(800,1100),random.randint(200,400)),random.randint(50,100))
         self.logo = LOGO((640,100))
         self.highscore = self.load_data()
         self.points = 0
@@ -40,7 +42,9 @@ class Gameplay(BaseState):
     def ballcollide(self):
         for ball1 in self.ballgroup1:
             if ball1.is_distance_colliding(self.redcircle) == True:
-                ball1.kill()
+                if self.points > 0:
+                    self.points -= 1
+                ball1.impact(self.redcircle)
 
             for point10circle in self.point10circlegroup:
                 if ball1.is_distance_colliding(point10circle) == True:
@@ -48,17 +52,17 @@ class Gameplay(BaseState):
                     point10circle.kill()
                     self.point10circlegroup.add(POINT10CIRCLE((random.randint(675, 1150), random.randint(400, 800))))
             if ball1.is_aabb_colliding(self.bumper1) == True:
-                ball1.impact(self.bumper1.col_y)
+                ball1.impact(self.bumper1)
             if ball1.is_aabb_colliding(self.bumper2) == True:
-                ball1.impact(self.bumper2.col_y)
+                ball1.impact(self.bumper2)
             if ball1.is_aabb_colliding(self.wall1) == True:
-                ball1.impact()
+                ball1.impact(self.wall1)
             if ball1.is_aabb_colliding(self.wall2) == True:
-                ball1.impact()
-            if ball1.is_aabb_colliding(self.wall3) == True:
-                ball1.impact()
-            if ball1.is_aabb_colliding(self.wall4) == True:
-                ball1.impact()
+                ball1.impact(self.wall2)
+            if ball1.is_aabb_colliding(self.rectangle3) == True:
+                ball1.impact(self.rectangle3)
+            if ball1.is_aabb_colliding(self.rectangle4) == True:
+                ball1.impact(self.rectangle4)
                 
     def highscorefunc(self):
         if self.points > self.highscore:
@@ -80,20 +84,24 @@ class Gameplay(BaseState):
                 self.bumper2.flip = True
 
     def draw(self, surface):
-        surface.fill(pygame.Color("grey"))
+        surface.blit(self.backgroundpicture, (-50, -900))
         surface.blit(self.canon.image, (self.canon.rect))
         surface.blit(self.redcircle.image, (self.redcircle.rect))
         surface.blit(self.bumper1.image, (self.bumper1.rect))
         surface.blit(self.bumper2.image, (self.bumper2.rect))
         surface.blit(self.wall1.image, (self.wall1.rect))
         surface.blit(self.wall2.image, (self.wall2.rect))
-        surface.blit(self.wall3.image, (self.wall3.rect))
-        surface.blit(self.wall4.image, (self.wall4.rect))
+        surface.blit(self.rectangle3.image, (self.rectangle3.rect))
+        surface.blit(self.rectangle4.image, (self.rectangle4.rect))
+        #pygame.draw.polygon(surface, 'purple', self.bumper1.rectRotated())
+        #pygame.draw.polygon(surface, 'blue', self.bumper2.rectRotated())
+        #pygame.draw.polygon(surface, 'green', (self.bumper1.rect.topleft,self.bumper1.rect.topright,self.bumper1.rect.bottomright,self.bumper1.rect.bottomleft))
+        #pygame.draw.polygon(surface, 'red', (self.bumper2.rect.topleft,self.bumper2.rect.topright,self.bumper2.rect.bottomright,self.bumper2.rect.bottomleft))
         surface.blit(self.logo.image, (self.logo.rect))
         self.ballgroup1.draw(surface)
         self.point10circlegroup.draw(surface)
         if self.points > self.highscore: surface.blit(self.newhighscoresurf, (1920 / 2 - 100, 1080 / 2))
-        surface.blit(self.scoresurf, (0, 0))
+        surface.blit(self.scoresurf, (900, 50))
 
     def update(self, dt):
         for ball1 in self.ballgroup1:
@@ -104,9 +112,12 @@ class Gameplay(BaseState):
                     self.points = 0
                 self.done = True
         self.redcircle.update()
+        self.rectangle3.update()
+        self.rectangle4.update()
         self.ballgroup1.update()
         self.ballcollide()
         self.bumper1.update()
+        print(self.bumper2.rectRotated())
         self.bumper2.update()
         self.canon.update()
         self.logo.update()
