@@ -3,6 +3,7 @@ from os import path
 
 """""
 All States inherit from BaseState
+sets Base Properties all States will need
 """""
 class BaseState(object):
     def __init__(self):
@@ -15,12 +16,27 @@ class BaseState(object):
         self.HS_FILE = "highscore.txt"
 
     def startup(self, persistent):
+        """
+        :param persistent:
+        :return:
+        """
         self.persist = persistent
 
     def get_event(self, event):
+        """
+        Event Handling
+        :param event:
+        :return:
+        """
         pass
 
     def load_data(self):
+
+        """
+        Reads the Highscore
+
+        :return:highscore
+        """
         self.dir = path.dirname(__file__)
         with open(path.join(self.dir, self.HS_FILE), 'r') as f:
             try:
@@ -30,7 +46,17 @@ class BaseState(object):
         return self.highscore
 
     def update(self, dt):
+        """
+        Every state calls this to update
+        :param dt:
+        :return:
+        """
         pass
 
     def draw(self, surface):
+        """
+        Every state calls this to draw
+        :param surface:
+        :return:
+        """
         pass

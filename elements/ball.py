@@ -10,6 +10,8 @@ class BALL(pygame.sprite.Sprite):
 
     def __init__(self, pos,width,height):
         super().__init__()
+        pygame.mixer.init()
+        self.collide_sound = pygame.mixer.Sound("assets/sounds/collide.wav")
         self.width = width
         self.height = height
         self.spritesheet = Spritesheet('assets/ball/alien.png')
@@ -30,7 +32,7 @@ class BALL(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
         self.gravity = .5
-        self.xspeed = -1 * random.randint(3,5)
+        self.xspeed = -3
         self.yspeed = -20
         self.retention = 0.75
 
@@ -43,6 +45,7 @@ class BALL(pygame.sprite.Sprite):
             self.yspeed = self.yspeed * -1 * self.retention
             self.rect.centerx += self.xspeed * 0.5
             self.rect.centery += self.yspeed * 0.5
+            self.collide_sound.play()
         if self.rect.bottom < 1081:
             self.yspeed += self.gravity
         else:
@@ -97,6 +100,7 @@ class BALL(pygame.sprite.Sprite):
         self.yspeed = self.yspeed * -1 * self.retention - other.col_y
         self.rect.centerx += self.xspeed*0.5
         self.rect.centery += self.yspeed*0.5
+        self.collide_sound.play()
 
     #Test
 

@@ -17,6 +17,9 @@ from os import path
 class Gameplay(BaseState):
     def __init__(self):
         super(Gameplay, self).__init__()
+        pygame.mixer.init()
+        self.points_sound = pygame.mixer.Sound("assets/sounds/points.wav")
+        self.points_sound.set_volume(0.5)
         self.next_state = "GAME_OVER"
         self.backgroundpicture = pygame.image.load('assets/backgroundpicture.png').convert_alpha()
         self.ballgroup1 = pygame.sprite.Group()
@@ -49,6 +52,7 @@ class Gameplay(BaseState):
             for point10circle in self.point10circlegroup:
                 if ball1.is_distance_colliding(point10circle) == True:
                     self.points += 10
+                    self.points_sound.play()
                     point10circle.kill()
                     self.point10circlegroup.add(POINT10CIRCLE((random.randint(675, 1150), random.randint(400, 800))))
             if ball1.is_aabb_colliding(self.bumper1) == True:
@@ -63,8 +67,7 @@ class Gameplay(BaseState):
                 ball1.impact(self.rectangle3)
             if ball1.is_aabb_colliding(self.rectangle4) == True:
                 ball1.impact(self.rectangle4)
-                
-    def highscorefunc(self):
+    def writehighscorefunc(self):
         if self.points > self.highscore:
             self.highscore = self.points
             with open(path.join(self.dir, self.HS_FILE), 'w') as f:
@@ -100,7 +103,8 @@ class Gameplay(BaseState):
         surface.blit(self.logo.image, (self.logo.rect))
         self.ballgroup1.draw(surface)
         self.point10circlegroup.draw(surface)
-        if self.points > self.highscore: surface.blit(self.newhighscoresurf, (1920 / 2 - 100, 1080 / 2))
+        if self.points > self.highscore:
+            surface.blit(self.newhighscoresurf, (1920 / 5 - 100, 50))
         surface.blit(self.scoresurf, (900, 50))
 
     def update(self, dt):
@@ -108,8 +112,8 @@ class Gameplay(BaseState):
             if ball1.rect.bottom > 1080:
                 for b in self.ballgroup1:
                     b.kill()
-                    self.highscorefunc()
-                    self.points = 0
+                self.writehighscorefunc()
+                self.points = 0
                 self.done = True
         self.redcircle.update()
         self.rectangle3.update()
