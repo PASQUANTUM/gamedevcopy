@@ -21,7 +21,7 @@ class BALL(pygame.sprite.Sprite):
         self.image = pygame.image.load(f'assets//ball/ball{img}.png')
         self.rect = self.image.get_rect(center = pos)
         self.gravity = .5
-        self.xspeed = -1 * random.randint(3,5)
+        self.xspeed = random.randint(-10,-1)
         self.yspeed = -20
         self.retention = 0.75
 
@@ -30,10 +30,7 @@ class BALL(pygame.sprite.Sprite):
         self.rect.x += self.xspeed
 
         if self.rect.top < 0:
-            self.xspeed = self.xspeed * -1 * self.retention
-            self.yspeed = self.yspeed * -1 * self.retention
-            self.rect.centerx += self.xspeed * 0.3
-            self.rect.centery += self.yspeed * 0.3
+            self.impact()
         if self.rect.bottom < 1081:
             self.yspeed += self.gravity
         else:
@@ -72,13 +69,24 @@ class BALL(pygame.sprite.Sprite):
         else:
             return False
 
-    def impact(self,other):
+    def impact(self,other_y_vel = 0, other_angle = 0):
+        if other_y_vel == 0:
+            other_y_vel = 0
+        else:
+            other_y_vel = other_y_vel
 
-        print(other,other.rect.topleft,other.rect.topright,other.rect.bottomleft,other.rect.bottomright)
-        self.xspeed = self.xspeed * -1 * self.retention - other.col_x
-        self.yspeed = self.yspeed * -1 * self.retention - other.col_y
-        self.rect.centerx += self.xspeed*0.55
-        self.rect.centery += self.yspeed*0.55
+        if other_angle == 0:
+            other_angle = 0
+        else:
+            other_angle = other_angle
+
+
+
+        #print('other velocity',other_y_vel)
+        self.xspeed = self.xspeed * -1 * self.retention
+        self.yspeed = self.yspeed * -1 * self.retention - other_y_vel
+        self.rect.centerx += self.xspeed*0.3
+        self.rect.centery += self.yspeed*0.3
 
     #Test
 
