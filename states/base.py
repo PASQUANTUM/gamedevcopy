@@ -12,7 +12,7 @@ class BaseState(object):
         self.next_state = None
         self.screen_rect = pygame.display.get_surface().get_rect()
         self.persist = {}
-        self.font = pygame.font.Font("assets/Pixel.ttf", 24)
+        self.font = pygame.font.Font("assets/font/Pixel.ttf", 24)
         self.HS_FILE = "highscore.txt"
 
     def startup(self, persistent):

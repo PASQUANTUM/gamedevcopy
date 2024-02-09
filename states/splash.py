@@ -46,7 +46,7 @@ class Splash(BaseState):
 
     def draw(self, surface):
         """
-
+        Draws Logo over black background
         :param surface:
         :return:
         """

@@ -1,7 +1,10 @@
 import pygame
 from .base import BaseState
 
-
+"""
+Fourth State
+Exits to The Menu or Directly into Gameplay
+"""
 class GameOver(BaseState):
     def __init__(self):
         super(GameOver, self).__init__()
@@ -12,6 +15,11 @@ class GameOver(BaseState):
         self.instructions_rect = self.instructions.get_rect(center=instructions_center)
 
     def get_event(self, event):
+        """
+        KeyBoard Input
+        :param event:
+        :return:
+        """
         if event.type == pygame.QUIT:
             self.quit = True
         elif event.type == pygame.KEYUP:
@@ -25,6 +33,12 @@ class GameOver(BaseState):
                 self.quit = True
 
     def draw(self, surface):
+
+        """
+        Draws Text on Surface
+        :param surface:
+        :return:
+        """
         surface.fill(pygame.Color("black"))
         surface.blit(self.title, self.title_rect)
         surface.blit(self.instructions, self.instructions_rect)

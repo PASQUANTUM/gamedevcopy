@@ -3,6 +3,11 @@ import random
 import pygame
 import math
 
+
+"""
+Flippers can move Upwards and pass additional Speed to Ball
+Different Orientations for more interesting Game Play
+"""
 class BUMPER(pygame.sprite.Sprite):
     def __init__(self, pos,orientation):
         super().__init__()
@@ -29,6 +34,11 @@ class BUMPER(pygame.sprite.Sprite):
 
 
     def flip_bumper(self):
+        """
+        This makes the Bumper 'jump' by altering the y speed
+        :return:
+        """
+
         if self.flip:
             self.rect.y -= self.vel_y * 2
             self.vel_y -= .5
@@ -40,6 +50,12 @@ class BUMPER(pygame.sprite.Sprite):
     def rectRotated(self):
         """
         Function to rotate a Rectangle
+
+        Potentially for use of Seperating Axis (SAT-Collisions)
+        Returns new Points of Rectangle after Rotation
+
+        Not used right now
+
         rotates Rect.
         rect: pygame.Rect
         rotation: int (degrees)
@@ -63,6 +79,10 @@ class BUMPER(pygame.sprite.Sprite):
         return newp1,newp2,newp3,newp4
 
     def update(self):
+        """
+        Depending on Orientation of Bumper it gives a Different Impuls to Ball
+        :return:
+        """
         self.flip_bumper()
         if self.flip:
             self.col_y = random.randint(17,20)

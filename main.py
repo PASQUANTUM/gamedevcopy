@@ -14,6 +14,7 @@ Declares States that Class Game is running
 Initiates Object of Game
 Runs Game
 
+Game should be run on 1920x1080 screens
 """
 
 pygame.init()

@@ -1,10 +1,17 @@
 import pygame
 from spritesheet import Spritesheet
 
+"""
+Logo Animation with no Impact on Gameplay
+"""
 class LOGO(pygame.sprite.Sprite):
 
     def __init__(self, pos):
         super().__init__()
+
+        """
+        Loading Spritesheet and Appending Sprite Images to Animation Array that will be looped over
+        """
         self.spritesheet = Spritesheet('assets/logo/happyflipperlogo.png')
         self.basicanimation = []
         self.index = 0
@@ -21,6 +28,11 @@ class LOGO(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
     def animate(self):
+        """
+        Current Image is set by current Index of Basicanimation
+        Index is Looping through the Length of the Array
+        :return:
+        """
         speed = 20
         self.counter += 1
         if self.counter >= speed and self.index < len(self.basicanimation):
@@ -31,4 +43,8 @@ class LOGO(pygame.sprite.Sprite):
         self.image = self.basicanimation[self.index]
 
     def update(self):
+        """
+        Updating the Animation
+        :return:
+        """
         self.animate()

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/gamdevstructure.iml" filepath="$PROJECT_DIR$/.idea/gamdevstructure.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pinball.iml" filepath="$PROJECT_DIR$/.idea/pinball.iml" />
     </modules>
   </component>
 </project>

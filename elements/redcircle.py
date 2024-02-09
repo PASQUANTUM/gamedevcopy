@@ -1,5 +1,8 @@
 import pygame
-
+"""
+This Obstical Removes 1 Point 
+It gives a small additional Impuls
+"""
 class REDCIRCLE(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
@@ -15,6 +18,10 @@ class REDCIRCLE(pygame.sprite.Sprite):
         self.xspeed = 3
 
     def move(self):
+        """
+        Basic Movement from Wall to Wall
+        :return:
+        """
 
         self.rect.x += self.xspeed
 
@@ -24,10 +31,18 @@ class REDCIRCLE(pygame.sprite.Sprite):
             self.impact()
 
     def impact(self):
+        """
+        On Impact changing Directions
+        :return:
+        """
         self.xspeed = self.xspeed * -1
 
 
     def update(self):
+        """
+        Updating Movement
+        :return:
+        """
         self.move()
 
 

@@ -14,6 +14,18 @@ from elements.rectangle import RECTANGLE
 import random
 from os import path
 
+"""
+Third State
+State where the Game is actually played
+Exits into GameOver
+
+Game Objects are initiated at the start
+
+Game ends if a Ball(Alien) falls to the Screen Bottom or on ESC
+Numerous Balls can be spawned that vanish at GameOver
+
+
+"""
 class Gameplay(BaseState):
     def __init__(self):
         super(Gameplay, self).__init__()
@@ -21,7 +33,7 @@ class Gameplay(BaseState):
         self.points_sound = pygame.mixer.Sound("assets/sounds/points.wav")
         self.points_sound.set_volume(0.5)
         self.next_state = "GAME_OVER"
-        self.backgroundpicture = pygame.image.load('assets/backgroundpicture.png').convert_alpha()
+        self.backgroundpicture = pygame.image.load('assets/background/backgroundpicture.png').convert_alpha()
         self.ballgroup1 = pygame.sprite.Group()
         self.canon = CANON((475+1920/3,0))
         self.redcircle = REDCIRCLE((1000,200))
@@ -31,8 +43,8 @@ class Gameplay(BaseState):
         self.bumper2 = BUMPER((400+1920/3, 950),2)
         self.wall1 = WALL((640, 0),1)
         self.wall2 = WALL((1280 , 0),1)
-        self.rectangle3 = RECTANGLE((random.randint(700,800),random.randint(200,400)),random.randint(50,100))
-        self.rectangle4 = RECTANGLE((random.randint(800,1100),random.randint(200,400)),random.randint(50,100))
+        self.rectangle3 = RECTANGLE((random.randint(800,850),random.randint(300,400)),random.randint(50,100))
+        self.rectangle4 = RECTANGLE((random.randint(900,1200),random.randint(300,400)),random.randint(50,100))
         self.logo = LOGO((640,100))
         self.highscore = self.load_data()
         self.points = 0
@@ -43,6 +55,16 @@ class Gameplay(BaseState):
 
 
     def ballcollide(self):
+        """
+        Loops through all balls in the game and checks for Collisions
+        If a ball is Colliding Ball.Impact Function is called
+
+        At collision with 10PointCircle,it will vanish and a new one randomly spawns
+        10 Points are added
+
+        At collision with Redcircle(red Planet) 1 Point is abducted
+        :return:
+        """
         for ball1 in self.ballgroup1:
             if ball1.is_distance_colliding(self.redcircle) == True:
                 if self.points > 0:
@@ -68,12 +90,23 @@ class Gameplay(BaseState):
             if ball1.is_aabb_colliding(self.rectangle4) == True:
                 ball1.impact(self.rectangle4)
     def writehighscorefunc(self):
+        """
+        Writes Highscore into Highscore.txt
+        :return:
+        """
         if self.points > self.highscore:
             self.highscore = self.points
             with open(path.join(self.dir, self.HS_FILE), 'w') as f:
                 f.write(str(self.highscore))
 
     def get_event(self, event):
+        """
+        KEY Inputs
+        Q and W to flip the Bumpers
+        SPACE to spawn a BALL out of Canon
+        :param event:
+        :return:
+        """
         if event.type == pygame.QUIT:
             self.quit = True
         elif event.type == pygame.KEYUP:
@@ -87,6 +120,13 @@ class Gameplay(BaseState):
                 self.bumper2.flip = True
 
     def draw(self, surface):
+        """
+        Draws Background and all Game objects
+        Draws Score
+        Draws Highscore Message if hit
+        :param surface:
+        :return:
+        """
         surface.blit(self.backgroundpicture, (-50, -900))
         surface.blit(self.canon.image, (self.canon.rect))
         surface.blit(self.redcircle.image, (self.redcircle.rect))
@@ -108,6 +148,12 @@ class Gameplay(BaseState):
         surface.blit(self.scoresurf, (900, 50))
 
     def update(self, dt):
+        """
+        Updates all Game Objects
+
+        :param dt:
+        :return:
+        """
         for ball1 in self.ballgroup1:
             if ball1.rect.bottom > 1080:
                 for b in self.ballgroup1:

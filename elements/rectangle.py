@@ -1,7 +1,9 @@
 import random
 from spritesheet import Spritesheet
 import pygame
-
+"""
+Cool KIT Obsticles for diverse Gamplay
+"""
 class RECTANGLE(pygame.sprite.Sprite):
     def __init__(self, pos,width):
         super().__init__()
@@ -11,6 +13,9 @@ class RECTANGLE(pygame.sprite.Sprite):
         self.counter = 0
         self.width = width
         self.height = width
+        """
+        Additional Collision Imuls on Ball (here 0)
+        """
         self.col_y = 0
         self.col_x = 0
 
@@ -23,6 +28,11 @@ class RECTANGLE(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
     def animate(self):
+        """
+        Current Image is set by current Index of Basicanimation
+        Index is Looping through the Length of the Array
+        :return:
+        """
         speed = 20
         self.counter += 1
         if self.counter >= speed and self.index < len(self.basicanimation):
@@ -33,4 +43,8 @@ class RECTANGLE(pygame.sprite.Sprite):
         self.image = self.basicanimation[self.index]
 
     def update(self):
+        """
+        Updating the Animation
+        :return:
+        """
         self.animate()

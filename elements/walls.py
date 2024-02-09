@@ -1,5 +1,9 @@
 import pygame
+"""
+The Walls of The Game
 
+These could also have Angle
+"""
 class WALL(pygame.sprite.Sprite):
     def __init__(self, pos,orientation):
         super().__init__()
