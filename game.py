@@ -1,6 +1,9 @@
 import pygame
 
-
+"""""
+Game inherits to Gameplay
+Defines Functions Gameplay needs
+"""""
 class Game(object):
     def __init__(self, screen, states, start_state):
         self.done = False

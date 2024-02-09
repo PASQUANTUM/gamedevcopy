@@ -66,11 +66,7 @@ class CANON(pygame.sprite.Sprite):
 
     def createball1(self):
         self.shooting = True
-        return BALL((self.rect.x+80, self.rect.top-30), 1)
-
-    def createball2(self):
-        self.shooting = True
-        return BALL((self.rect.x+80, self.rect.top), 2)
+        return BALL((self.rect.x+80, self.rect.top-30),52,52)
 
     def update(self):
         self.animationcount()

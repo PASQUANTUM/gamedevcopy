@@ -1,6 +1,9 @@
 import pygame
 from os import path
 
+"""""
+All States inherit from BaseState
+"""""
 class BaseState(object):
     def __init__(self):
         self.done = False

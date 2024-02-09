@@ -8,20 +8,29 @@ BOUNCE_STOP = 4
 
 class BALL(pygame.sprite.Sprite):
 
-    def __init__(self, pos, img):
+    def __init__(self, pos,width,height):
         super().__init__()
+        self.width = width
+        self.height = height
+        self.spritesheet = Spritesheet('assets/ball/alien.png')
+        self.basicanimation = []
+        self.index = 0
+        self.counter = 0
 
-        if img == 1:
-            self.width = 48
-            self.height = 48
-        else:
-            self.width = 64
-            self.height = 64
 
-        self.image = pygame.image.load(f'assets//ball/ball{img}.png')
-        self.rect = self.image.get_rect(center = pos)
+        for num in range(0, 5):
+            img = self.spritesheet.parse_sprite(f"New Piskel{num}.png").convert_alpha()
+            img = pygame.transform.scale(img, (self.width,self.width))
+            self.basicanimation.append(img)
+
+
+        #self.image = self.basicanimation[self.index]
+        self.image = pygame.image.load('assets/ball/alien2.png')
+        self.image = pygame.transform.scale(img, (self.width,self.width))
+        self.rect = self.image.get_rect(topleft=pos)
+
         self.gravity = .5
-        self.xspeed = random.randint(-10,-1)
+        self.xspeed = -1 * random.randint(3,5)
         self.yspeed = -20
         self.retention = 0.75
 
@@ -30,7 +39,10 @@ class BALL(pygame.sprite.Sprite):
         self.rect.x += self.xspeed
 
         if self.rect.top < 0:
-            self.impact()
+            self.xspeed = self.xspeed * -1 * self.retention
+            self.yspeed = self.yspeed * -1 * self.retention
+            self.rect.centerx += self.xspeed * 0.5
+            self.rect.centery += self.yspeed * 0.5
         if self.rect.bottom < 1081:
             self.yspeed += self.gravity
         else:
@@ -43,6 +55,15 @@ class BALL(pygame.sprite.Sprite):
                 self.yspeed = 0
                 self.xspeed = 0
 
+
+    def animate(self):
+        self.counter += 1
+        if self.counter >= speed and self.index < len(self.basicanimation):
+            self.counter = 0
+            self.index += 1
+        if self.index >= 5:
+            self.index = 0
+        self.image = self.basicanimation[self.index]
 
     def is_distance_colliding(self, other):
         distance = (((self.rect.centerx-other.rect.centerx) ** 2) + ((self.rect.centery-other.rect.centery) ** 2)) ** 0.5
@@ -69,27 +90,17 @@ class BALL(pygame.sprite.Sprite):
         else:
             return False
 
-    def impact(self,other_y_vel = 0, other_angle = 0):
-        if other_y_vel == 0:
-            other_y_vel = 0
-        else:
-            other_y_vel = other_y_vel
+    def impact(self,other):
 
-        if other_angle == 0:
-            other_angle = 0
-        else:
-            other_angle = other_angle
-
-
-
-        #print('other velocity',other_y_vel)
-        self.xspeed = self.xspeed * -1 * self.retention
-        self.yspeed = self.yspeed * -1 * self.retention - other_y_vel
-        self.rect.centerx += self.xspeed*0.3
-        self.rect.centery += self.yspeed*0.3
+        print(other,other.rect.topleft,other.rect.topright,other.rect.bottomleft,other.rect.bottomright)
+        self.xspeed = self.xspeed * -1 * self.retention - other.col_x
+        self.yspeed = self.yspeed * -1 * self.retention - other.col_y
+        self.rect.centerx += self.xspeed*0.5
+        self.rect.centery += self.yspeed*0.5
 
     #Test
 
     def update(self):
         self.move()
+        #self.animate()
 
